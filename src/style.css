@@ -1,0 +1,21 @@
+.App {
+  text-align: center;
+}
+
+.taskcontainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.taskcard {
+  width: 50%;
+  height: 150px;
+  border-radius: 20px;
+  box-shadow: 2px 2px 2px 2px #8c8c88;
+  margin: 15px; 
+
+
+}
