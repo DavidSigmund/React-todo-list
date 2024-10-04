@@ -45,4 +45,10 @@ switch ($method) {
             return;
         }
         break;
+    case "DELETE":
+        $path = explode('/', $_SERVER["REQUEST_URI"]);
+
+        // $result = mysqli_query($db_con, "DELETE from tasks WHERE taskId = '$path[4]'");
+
+        break;
 }

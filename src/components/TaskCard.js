@@ -1,10 +1,24 @@
+import React, {useState} from 'react';
+import axios from 'axios';
 import '../style.css';
 
-function TaskCard({taskName, taskInfo}) {
+function TaskCard({task}) {
+    const [message, setMessage] = useState('');
+
+    const handleDelete = async(taskId) => {
+        const res = await axios.delete(`http://localhost/reactcrudphp/api/tasks.php/${taskId}`);
+        setMessage(res.data.success);
+    }
+
     return (<>
         <div className="taskcard">
-            <h3>{taskName}</h3>
-            <h5>{taskInfo}</h5>
+            <p>{message}</p>
+            <div className='taskHeader'>
+                <button className='btn btn-info' type="button" data-bs-toggle="modal" data-bs-target="#editTaskModal">...</button>
+                <h3>{task.taskName}</h3>
+                <button onClick={() => handleDelete(task.taskId)} className='btn btn-danger'>X</button>
+            </div>
+            <h5>{task.taskInfo}</h5>
         </div>
     </>);
 }

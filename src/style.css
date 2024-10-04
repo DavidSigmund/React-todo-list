@@ -16,6 +16,11 @@
   border-radius: 20px;
   box-shadow: 2px 2px 2px 2px #8c8c88;
   margin: 15px; 
+}
 
-
+.taskHeader{
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  margin: 10px;
 }
