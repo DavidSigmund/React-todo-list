@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errirs', 1);
 
-header('Access-Control-Allow-Origin:* ');
+header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: *');
 header('Access-Control-Allow-Methods: *');
 
@@ -45,10 +45,19 @@ switch ($method) {
             return;
         }
         break;
+
     case "DELETE":
-        $path = explode('/', $_SERVER["REQUEST_URI"]);
+        if (isset($_GET['taskId'])) {
+            $taskId = $_GET['taskId']; // Fetching taskId from GET parameters
+            $queryResult = mysqli_query($db_con, "DELETE FROM tasks WHERE taskId = $taskId"); // Use the variable here
 
-        // $result = mysqli_query($db_con, "DELETE from tasks WHERE taskId = '$path[4]'");
-
+            if ($queryResult) {
+                echo json_encode(["success" => true, "message" => "Task deleted successfully"]); // Proper JSON response
+            } else {
+                echo json_encode(["success" => false, "error" => "Failed to delete the task. Please check the data."]);
+            }
+        } else {
+            echo json_encode(["success" => false, "error" => "Task ID not provided."]);
+        }
         break;
 }
