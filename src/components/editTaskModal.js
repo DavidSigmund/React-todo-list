@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 
-function EditTaskModal({ getTaskData }) {
+function EditTaskModal({ task, getTaskData}) {
   const [formValue, setFormValue] = useState({ taskName: '', taskInfo: '' });
   const modalRef = useRef();
 
@@ -9,20 +9,29 @@ function EditTaskModal({ getTaskData }) {
     setFormValue({ ...formValue, [inputEvent.target.name]: inputEvent.target.value });
   };
 
-  const handleSubmit = async (submitEvent) => {
-    console.log(submitEvent)
-    console.log(submitEvent.preventDefault())
-    submitEvent.preventDefault();
-    const formData = { taskName: formValue.taskName, taskInfo: formValue.taskInfo };
-    const res = await axios.post("http://localhost/reactcrudphp/api/tasks.php", formData);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("formvalue:", formValue);
+    const formData = {taskName: formValue.taskName, taskInfo: formValue.taskInfo, taskId: task.taskId};
+    console.log("formdata:", formData);
 
-    if (res.data.succes) {
-      const bootstrapModal = window.bootstrap.Modal.getInstance(modalRef.current);
-      bootstrapModal.hide();
-      
-      getTaskData();
+    try {
+      const res = await axios.put("http://localhost/reactcrudphp/api/tasks.php", formData)
+      console.log("data" . res.data)
+      console.log("Form submitted successfully");
+    } catch (error) {
+      console.error("Error submitting form", error);
     }
   };
+
+  useEffect(() => {
+    if (task) {
+      setFormValue({
+        taskName: task.taskName,
+        taskInfo: task.taskInfo,
+      });
+    }
+  }, [task]);
 
   return (
     <div className="modal" id="editTaskModal" ref={modalRef}>
@@ -30,7 +39,7 @@ function EditTaskModal({ getTaskData }) {
         <div className="modal-content">
 
           <div className="modal-header">
-            <h4 className="modal-title">Add a task</h4>
+            <h4 className="modal-title">Edit the task</h4>
             <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
           </div>
 
@@ -51,7 +60,7 @@ function EditTaskModal({ getTaskData }) {
                 name="taskInfo" 
                 onChange={handelInput} 
               />
-              <input className="mt-2 form-control btn btn-success" type="submit" />
+              <input className="mt-2 form-control btn btn-info" type="submit" value="Update"/>
             </form>
           </div>
 

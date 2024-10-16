@@ -10,8 +10,6 @@ function AddTaskModal({ getTaskData }) {
   };
 
   const handleSubmit = async (submitEvent) => {
-    console.log(submitEvent)
-    console.log(submitEvent.preventDefault())
     submitEvent.preventDefault();
     const formData = { taskName: formValue.taskName, taskInfo: formValue.taskInfo };
     const res = await axios.post("http://localhost/reactcrudphp/api/tasks.php", formData);

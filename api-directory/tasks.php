@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ALL);
-ini_set('display_errirs', 1);
+ini_set('display_errors', 1);
 
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: *');
@@ -46,7 +46,32 @@ switch ($method) {
         }
         break;
 
+    case "PUT":
+        $taskPostData = json_decode(file_get_contents("php://input"));
+        $taskId = $taskPostData->taskId;
+        $taskName = $taskPostData->taskName;
+        $taskInfo = $taskPostData->taskInfo;
+
+        $queryResult = mysqli_query($db_con, "UPDATE tasks SET taskName = '$taskName', taskInfo = '$taskInfo' WHERE taskId = $taskId");
+
+        if ($queryResult) {
+            echo json_encode([
+                "success" => true,
+                "message" => "Task updated successfully",
+                "task" => [
+                    "taskId" => $taskId,
+                    "taskName" => $taskName,
+                    "taskInfo" => $taskInfo
+                ]
+            ]);
+        } else {
+            echo json_encode(["success" => false, "message" => "Something went wrong, please check the data"]);
+        }
+        return;
+
+
     case "DELETE":
+        // $path = explode('/', $_REQUEST["REQUEST_URI"]);
         if (isset($_GET['taskId'])) {
             $taskId = $_GET['taskId']; // Fetching taskId from GET parameters
             $queryResult = mysqli_query($db_con, "DELETE FROM tasks WHERE taskId = $taskId"); // Use the variable here
