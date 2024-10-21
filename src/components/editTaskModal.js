@@ -11,14 +11,18 @@ function EditTaskModal({ task, getTaskData}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("formvalue:", formValue);
     const formData = {taskName: formValue.taskName, taskInfo: formValue.taskInfo, taskId: task.taskId};
-    console.log("formdata:", formData);
-
+    
     try {
       const res = await axios.put("http://localhost/reactcrudphp/api/tasks.php", formData)
-      console.log("data" . res.data)
-      console.log("Form submitted successfully");
+
+      // hide modal
+      const bootstrapModal = window.bootstrap.Modal.getInstance(modalRef.current);
+      bootstrapModal.hide();
+      
+      // refresh data
+      getTaskData();
+
     } catch (error) {
       console.error("Error submitting form", error);
     }

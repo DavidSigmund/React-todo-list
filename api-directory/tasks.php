@@ -13,7 +13,7 @@ if ($db_con === false) {
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-// echo "test " . $method;
+echo json_encode("test " . $method);
 switch ($method) {
     case "GET":
         $allTasks = mysqli_query($db_con, "SELECT * FROM tasks");
@@ -71,13 +71,13 @@ switch ($method) {
 
 
     case "DELETE":
-        // $path = explode('/', $_REQUEST["REQUEST_URI"]);
+        $path = explode('/', $_REQUEST["REQUEST_URI"]);
         if (isset($_GET['taskId'])) {
-            $taskId = $_GET['taskId']; // Fetching taskId from GET parameters
-            $queryResult = mysqli_query($db_con, "DELETE FROM tasks WHERE taskId = $taskId"); // Use the variable here
+            $taskId = $_GET['taskId'];
+            $queryResult = mysqli_query($db_con, "DELETE FROM tasks WHERE taskId = $taskId");
 
             if ($queryResult) {
-                echo json_encode(["success" => true, "message" => "Task deleted successfully"]); // Proper JSON response
+                echo json_encode(["success" => true, "message" => "Task deleted successfully"]);
             } else {
                 echo json_encode(["success" => false, "error" => "Failed to delete the task. Please check the data."]);
             }

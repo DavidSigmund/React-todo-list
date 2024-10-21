@@ -3,23 +3,21 @@ import axios from 'axios';
 import '../style.css';
 
 // components
-
 function TaskCard({ task, onEditClick, getTaskData }) {
   
   const [message, setMessage] = useState('');
   
   const handleDelete = async (taskId) => {
+    console.log("used delete with " + taskId)
     try {
-      const res = await axios.delete(`http://localhost/reactcrudphp/api/tasks.php?taskId=${taskId}`);
-      setMessage(res.data.message);
-      getTaskData(); // Refresh the task list after deletion
+      const res = await axios.delete("http://localhost/reactcrudphp/api/tasks.php?taskId=" + taskId);
+      // refresh data
+      getTaskData(); 
+
     } catch (error) {
-      console.error("Error deleting task:", error);
+      console.error('Error deleting task:', error);
     }
   };
-  
-  
-
 
   return (
     <>
